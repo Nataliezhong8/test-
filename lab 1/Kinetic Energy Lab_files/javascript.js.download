@@ -1,0 +1,644 @@
+StarColors = new Array("#FFFFFF", "#C0C0C0", "#a1fff7", "#fffba6", "#e30f59", "#e3d7e1", "#e3dd44", "#90b2cb", "#5a6bcb", "#fffb04", "#d2fff9" );
+
+WallEMass = new Array(40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100);
+FireThrust = new Array(20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250);
+FireEnergy = new Array(1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 8000, 9000, 10000, 20000);
+MaxSpeed = new Array(1, 2, 4, 5, 6, 8, 10, 12, 15, 16, 18, 20, 25);
+FireMessage = new Array("Activate", "Shut Off", "Reset");
+
+StarX = new Array();
+StarY = new Array();
+StarM = new Array();
+StarC = new Array();
+
+xstartpos = 835;
+ystartpos = 150;
+
+xspeed = 0;
+
+lengthofspray = 0;
+startofspray = xstartpos;
+
+Languages = new Array("English", "Croatian", "Macedonian");
+
+PictureLocationPlace = new Array();
+PictureLocationPlace[0] = "./Kinetic Energy Lab_files/OverviewPicture.gif";
+PictureLocationPlace[1] = "http://www.thephysicsaviary.com/Physics/Programs/Labs/WorkToKELab/images/OverviewPictureCroatian.png";
+PictureLocationPlace[2] = "http://www.thephysicsaviary.com/Physics/Programs/Labs/WorkToKELab/images/OverviewPictureMacedonian.png";
+
+FireMessageCroatian = new Array("Aktiviraj", "Isključi", "Resetiraj");
+
+FireMessageMacedonian = new Array("Активирај", "Исклучи", "Повтори");
+
+ProgramTitleIs = new Array();
+ProgramTitleIs[0] = "Kinetic Energy Lab";
+ProgramTitleIs[1] = "Rad i pretvorba energije";
+ProgramTitleIs[2] = "Работа на сила и промена на кинетичката енергија";
+ 
+ 
+Directions = new Array();
+Directions[0] = "In this lab you will use your fire extinguisher to give different amounts of energy to astronaut Sandra. You can control the mass of Sandra, the force from her extinguisher, and the distance over which the extinguisher will be firing.  You can also limit the energy given to her by the fire extinguisher or set a maximum speed.  The fire extinguisher will automatically shut off when it is out of energy or when you reach maximum speed.<br /><br />When you are ready to start the experiment, click on the begin button.";
+
+Directions[1] = "U ovoj simulaciji protupožarnim aparatom djelujemo potisnom silom na astronauta Sandraa. Vaš zadatak je odrediti brzinu astronauta pomoću fotoelektričnih senzorskih vrata, njegovu kinetičku energiju i rad potisne sile. Možete mijenjati masu astronauta, potisnu silu protupožarnog aparata i put na kojem djeluje potisna sila.<br /><br />Morate isključiti protupožarni aparat prije nego astronaut dođe do prvih vrata. Kliknite na Početak kada ste spremni započeti s rješavanjem zadatka.";
+ 
+Directions[2] = "Во оваа симулација со помош на млаз од противпожарен апарат дејствуваме со потисна сила на астронаутот Вал. Твоја задча е, со помош на фотоелектричните сензори кои меѓусебно се одалечени 10 m, да ја одредиш брзината на астронаутот, неговата кинетичка енергија и работата на потисната сила. Можеш да ја менуваш масата на астронаутот, големината на силата на млазот од противпожарниот апарат и должината на патот на кој дејстувава потисната сила. <br /><br />Апаратот за гаснење пожар мораш да го изгаснеш пред астронаутот да стигне до првиот сензор. Притисни на Почеток кога ќе бидеш спремен да го започнеш мерењето. ";
+
+Button1Text = new Array();
+Button1Text[0] = "Begin";
+Button1Text[1] = "Početak";
+Button1Text[2] = "Почеток";
+
+
+Control1Text = new Array();
+Control1Text[0] = "Sandra's Mass";
+Control1Text[1] = "Sandraeva masa";
+Control1Text[2] = "Масата на Вал";
+
+
+Control2Text = new Array();
+Control2Text[0] = "Extinguisher's Force";
+Control2Text[1] = "Potisna sila";
+Control2Text[2] = "Потисна сила";
+
+Control3Text = new Array();
+Control3Text[0] = "Photogate Time";
+Control3Text[1] = "Vrijeme u vratima";
+Control3Text[2] = "Време низ сензорите";
+
+
+Control4Text = new Array();
+Control4Text[0] = "Photogates are 10 m apart";
+Control4Text[1] = "Razmak među vratima je 10 m";
+Control4Text[2] = "Растојанието меѓу сензорите е 10 m";
+
+Control5Text = new Array();
+Control5Text[0] = "Energy Gained";
+Control5Text[1] = "Dobivena energija";
+Control5Text[2] = "Добиена енергија";
+
+Control6Text = new Array();
+Control6Text[0] = "Maximum Energy";
+Control6Text[1] = "Maksimum energija";
+Control6Text[2] = "Максимум енергија";
+
+Control7Text = new Array();
+Control7Text[0] = "Maximum Speed";
+Control7Text[1] = "Maksimum Ubrzati";
+Control7Text[2] = "Максимум Брзина";
+
+/* called by onLoad */
+
+function initialize(){
+
+	/* Initial Conditions */
+	
+	for (i = 0; i<200; i++){
+		StarX[i] = Math.floor(Math.random()*900);
+		StarY[i] = Math.floor(Math.random()*600);
+		StarM[i] = (Math.random()*150)/100;
+		StarC[i] = Math.floor(Math.random()*10);
+	}
+	
+	massnumber = 6;
+	forcenumber = 7;
+	energynumber = 10;
+	speednumber = 10;
+	GateTime = 0;
+	ForceTime = 0;
+	firenumber = 0;
+	EnergyGained = 0;
+	extinguisher = "full";
+	gate1 = 0;
+	gate2 = 0;
+	
+	xpos = xstartpos;
+	ypos = ystartpos;
+	
+	SetValues();
+	
+	/*  Sets up the canvas for showing the pulley systems */
+
+	theCanvas = document.getElementById("CanvasOne");
+	ctx = theCanvas.getContext("2d");
+	
+	document.getElementById("LabDirections").innerHTML = Directions[languagenumber];
+	document.getElementById("BeginButton").innerHTML = Button1Text[languagenumber];
+	document.getElementById("ProgramTitle").innerHTML = ProgramTitleIs[languagenumber];
+	document.title = ProgramTitleIs[languagenumber];
+	document.getElementById("OverviewPicture").src = PictureLocationPlace[languagenumber];
+
+}
+
+function SetValues() {
+	ErrorinForce =	Math.random()*3/100;
+	ErrorDirection = Math.random()*10;
+	if (ErrorDirection > 5){
+		ErrorinForce = -1.0*ErrorinForce;
+	}
+	RealForce = FireThrust[forcenumber]*(1+ErrorinForce);
+	ErrorinMass =	Math.random()*3/100;
+	ErrorDirection = Math.random()*10;
+	if (ErrorDirection > 5){
+		ErrorinMass = -1.0*ErrorinMass;
+	}
+	RealMass = WallEMass[massnumber]*(1+ErrorinForce);
+	extinguisher = "full";
+}
+
+
+/* Called by the Begin Button */
+
+function LoadIt(){
+	document.getElementById("LabSection").style.visibility = "visible";
+	document.getElementById("OverviewSection").style.visibility = "hidden";
+	
+	drawingpart();
+
+}
+
+function drawingpart(){
+			
+	/* 	background drawing */
+
+	ctx.fillStyle="#000000";
+	ctx.fillRect(0,0,900,600);
+	
+	for (i = 0; i<200; i++){
+		DrawStars(StarX[i], StarY[i], StarM[i], StarC[i]);
+	}
+	EnergyGained = 0.5*RealMass*xspeed*xspeed;
+	if (EnergyGained >= FireEnergy[energynumber]){
+		if (extinguisher == 'full'){
+			extinguisher = 'out';
+			Fire();	
+		}
+		EnergyGained = FireEnergy[energynumber];
+		
+	}
+	if (xspeed >= MaxSpeed[speednumber]){
+		if (extinguisher == 'full'){
+			extinguisher = 'out';
+			Fire();	
+		}
+	}
+	
+	if (firenumber != 0){
+		d = new Date();
+		nowtime = d.getTime();
+		
+		if (firenumber == 1){
+			ForceTime = nowtime - starttime;
+			forcetimesec = (nowtime - starttime)/1000;
+			xspeed = RealForce*forcetimesec/RealMass;
+			RealGateTime = 10/xspeed*1000;
+			lengthofspray = 2*FireThrust[forcenumber]*forcetimesec;
+		}
+		timeinterval = (nowtime - previoustime)/1000;
+		intervaldistancetraveled = xspeed*timeinterval*10;
+		xpos = xpos - intervaldistancetraveled;
+		if (firenumber == 1){
+			startofspray = xpos;
+			stopspray = xpos;	
+		}
+		if (firenumber == 2){
+			startofspray = stopspray + 2*FireThrust[forcenumber]*(nowtime - stoppedspraytime)/1000;
+			ctx.globalAlpha = 0.5;
+			DrawWallE(xposghost, ypos, 50);
+			ctx.globalAlpha = 1.0;
+		}
+		previoustime = nowtime;
+		
+		
+	}
+	
+	DrawSpaceGrid();
+	DrawGate(20, 50, 2);
+	DrawGate(120, 50, 1);
+	DrawSpray();
+	DrawWallE(xpos, ypos, 50);
+	DrawControlArea();
+	
+	DrawFireButton(750,50,150,50)
+
+}
+
+function Fire(){
+	if (firenumber == 0){
+		d = new Date();
+		starttime = d.getTime();
+		previoustime = starttime;
+		StartItMoving = setInterval(drawingpart, 20);
+		document.getElementById("MassUp").style.visibility = "hidden";
+		document.getElementById("MassDown").style.visibility = "hidden";
+		document.getElementById("ForceUp").style.visibility = "hidden";
+		document.getElementById("ForceDown").style.visibility = "hidden";
+		document.getElementById("MaxEnergyUp").style.visibility = "hidden";
+		document.getElementById("MaxEnergyDown").style.visibility = "hidden";
+		document.getElementById("MaxSpeedUp").style.visibility = "hidden";
+		document.getElementById("MaxSpeedDown").style.visibility = "hidden";
+	}
+	if (firenumber == 1){
+		d = new Date();
+		stoppedspraytime = d.getTime();
+		xposghost = xpos;
+		document.getElementById("MassUp").style.visibility = "hidden";
+		document.getElementById("MassDown").style.visibility = "hidden";
+		document.getElementById("ForceUp").style.visibility = "hidden";
+		document.getElementById("ForceDown").style.visibility = "hidden";
+		document.getElementById("MaxEnergyUp").style.visibility = "hidden";
+		document.getElementById("MaxEnergyDown").style.visibility = "hidden";
+		document.getElementById("MaxSpeedUp").style.visibility = "hidden";
+		document.getElementById("MaxSpeedDown").style.visibility = "hidden";
+
+	}
+	if (firenumber == 2){
+		firenumber = -1;
+		ForceTime = 0;
+		xpos = xstartpos;
+		ypos = ystartpos;
+		xspeed = 0;
+		gate1 = 0;
+		gate2 = 0;
+		GateTime = 0;
+		EnergyGained = 0;
+		lengthofspray = 0;
+		startofspray = xstartpos;
+		SetValues();
+		document.getElementById("MassUp").style.visibility = "visible";
+		document.getElementById("MassDown").style.visibility = "visible";
+		document.getElementById("ForceUp").style.visibility = "visible";
+		document.getElementById("ForceDown").style.visibility = "visible";
+		document.getElementById("MaxEnergyUp").style.visibility = "visible";
+		document.getElementById("MaxEnergyDown").style.visibility = "visible";
+		document.getElementById("MaxSpeedUp").style.visibility = "visible";
+		document.getElementById("MaxSpeedDown").style.visibility = "visible";
+	}
+	firenumber++;
+}
+
+function DrawSpaceGrid(){
+	ctx.strokeStyle = "#46ff70";
+
+	for (i=0; i<18; i++){
+		ctx.beginPath();
+		if (i%2){
+			ctx.lineWidth = 0.5;
+		}
+		else{
+			ctx.lineWidth = 1.0;
+			WriteText(25+i*50, 290, 80-5*i, 20, "#009900", 0.5);
+		}
+		ctx.moveTo(25+i*50, 0);
+		ctx.lineTo(25+i*50, 260);
+		ctx.stroke();
+		
+	}
+	WriteText(850, 290, "m", 20, "#009900", 0.5);
+	
+}
+
+function DrawControlArea(){
+	ctx.globalAlpha = 0.7;
+	ctx.fillStyle="#FFFFFF";
+	ctx.fillRect(0,300,900,300);
+	ctx.globalAlpha = 1.0;
+	
+	WriteStatsInfo(750, 340, Control1Text[languagenumber], 28, "#990000");
+	SendText = WallEMass[massnumber] + " kg";
+	WriteStatsInfo(750, 370, SendText, 28, "#990000");
+	DrawArrow(700, 390, 50, 25, "#990000", 0);
+	DrawArrow(800, 390, 50, 25, "#990000", Math.PI);
+	
+	WriteStatsInfo(750, 480, Control7Text[languagenumber], 28, "#990000");
+	SendText = "~" + MaxSpeed[speednumber] + " m/s";
+	WriteStatsInfo(750, 510, SendText, 28, "#990000");
+	DrawArrow(700, 530, 50, 25, "#990000", 0);
+	DrawArrow(800, 530, 50, 25, "#990000", Math.PI);
+	
+	WriteStatsInfo(450, 340, Control2Text[languagenumber], 28, "#009900");
+	SendText = FireThrust[forcenumber] + " N";
+	WriteStatsInfo(450, 370, SendText, 28, "#009900");
+	DrawArrow(400, 390, 50, 25, "#009900", 0);
+	DrawArrow(500, 390, 50, 25, "#009900", Math.PI);
+	
+	WriteStatsInfo(450, 480, Control6Text[languagenumber], 28, "#009900");
+	SendText = FireEnergy[energynumber] + " J";
+	WriteStatsInfo(450, 510, SendText, 28, "#009900");
+	DrawArrow(400, 530, 50, 25, "#009900", 0);
+	DrawArrow(500, 530, 50, 25, "#009900", Math.PI);
+	
+	WriteStatsInfo(150, 375, Control3Text[languagenumber], 28, "#000099");
+	SendText = GateTime + " ms";
+	WriteStatsInfo(150, 425, SendText, 28, "#000099");
+	SendText = Control4Text[languagenumber];
+	WriteStatsInfo(150, 325, SendText, 18, "#000099");
+	
+	WriteStatsInfo(150, 500, Control5Text[languagenumber], 28, "#000000");
+	SendText = EnergyGained.toFixed(0) + " J";
+	WriteStatsInfo(150, 550, SendText, 28, "#000000");
+}
+
+function DrawFireButton(x,y,w,h){
+	ctx.fillStyle = "#666666";
+	ctx.strokeStyle = "#EEEEEE";
+	ctx.lineWidth = 3;
+	ctx.beginPath();
+	ctx.moveTo(x-0.5*w+5, y);
+	ctx.lineTo(x+0.5*w-5, y);
+	ctx.arc(x+0.5*w-5, y+5, 5, 1.5*Math.PI, 0*Math.PI);	
+	ctx.lineTo(x+0.5*w, y+h-5);
+	ctx.arc(x+0.5*w-5, y+h-5, 5, 0*Math.PI, 0.5*Math.PI);
+	ctx.lineTo(x-0.5*w+5, y+h);
+	ctx.arc(x-0.5*w+5, y+h-5, 5, 0.5*Math.PI, 1.0*Math.PI);
+	ctx.lineTo(x-0.5*w, y+5);
+	ctx.arc(x-0.5*w+5, y+5, 5, 1.0*Math.PI, 1.5*Math.PI);
+	ctx.stroke();
+	ctx.fill();
+	if (languagenumber == 0){
+		WriteStatsInfo(x, y+0.5*h+10, FireMessage[firenumber], 28, "#FFFFFF");
+	}
+	if (languagenumber == 1){
+		WriteStatsInfo(x, y+0.5*h+10, FireMessageCroatian[firenumber], 28, "#FFFFFF");
+	}
+	if (languagenumber == 2){
+		WriteStatsInfo(x, y+0.5*h+10, FireMessageMacedonian[firenumber], 28, "#FFFFFF");
+	}
+}
+
+
+function DrawStars(x,y,m,c){
+	ctx.fillStyle = StarColors[c];
+	ctx.beginPath();
+	ctx.arc(x,y,m,0,2*Math.PI);
+	ctx.closePath();
+	ctx.fill();
+}
+
+function WriteStatsInfo(x, y, t, j, c){
+	ctx.font = j + "px Arial";
+	ctx.fillStyle=c;
+	temptext = t;
+	metrics = ctx.measureText(temptext);
+	textWidth = metrics.width;
+	xposition = x - 0.5*textWidth;
+	ctx.fillText(temptext,xposition, y);
+}
+
+function DrawGate(x, y, z){
+	if (Math.abs(xpos-x)>15){
+		endbeam = 200;
+	}
+	else{
+		if (gate1 == 0){
+			d = new Date();
+			startphototime = d.getTime();
+			gate1 = 1;
+		}
+		
+		if (z == 2){
+			gate2 = 1;
+		}
+		
+		endbeam = 100;
+	}
+	if (gate1 == 1 && gate2 == 0){
+		d = new Date();
+		nowtime = d.getTime();
+		GateTime = nowtime - startphototime;
+	}
+	
+	ctx.strokeStyle = "#c0c0c0";
+	ctx.fillStyle = "#333333";
+	ctx.lineWidth = 1.0;
+	ctx.strokeRect(x,y,10,10);
+	ctx.fillRect(x,y,10,10);
+	ctx.strokeStyle = "#FF0000";
+	ctx.lineWidth = 2.0;
+	ctx.beginPath();
+	ctx.moveTo(x+5,y+10);
+	ctx.lineTo(x+5,y+endbeam);
+	ctx.stroke();
+	ctx.closePath();
+	ctx.strokeStyle = "#c0c0c0";
+	ctx.fillStyle = "#333333";
+	ctx.lineWidth = 1.0;
+	ctx.strokeRect(x,y+200,10,10);
+	ctx.fillRect(x,y+200,10,10);
+}
+
+function DrawWallE(x,y,h){
+	bb = h/100;
+
+	
+	// helmet 
+	ctx.strokeStyle = "#c0c0c0";
+	ctx.fillStyle = "#EEEEEE";
+	ctx.lineWidth = 0.5*bb;
+	ctx.beginPath();
+	ctx.arc(x,y+15*bb,15*bb,0,2*Math.PI);
+	ctx.stroke();
+	ctx.closePath();
+	ctx.fill();
+	
+	// faceshield
+	ctx.strokeStyle = "#333333";
+	ctx.fillStyle = "#f2ce0c";
+	ctx.lineWidth = 0.5*bb;
+	ctx.beginPath();
+	ctx.moveTo(x, y+15*bb);
+	ctx.arc(x,y+15*bb,16*bb,0.25*Math.PI,1.75*Math.PI, true);
+	ctx.lineTo(x, y+15*bb);
+	ctx.stroke();
+	ctx.closePath();
+	ctx.fill();
+	
+	//backpack
+	ctx.strokeStyle = "#333333";
+	ctx.fillStyle = "#DDDDDD";
+	ctx.lineWidth = 0.5*bb;
+	ctx.strokeRect(x-20*bb, y+27*bb, 10*bb, 40*bb);
+	ctx.fillRect(x-20*bb, y+27*bb, 10*bb, 40*bb);
+	
+	//body
+	ctx.strokeStyle = "#333333";
+	ctx.fillStyle = "#DDDDDD";
+	ctx.lineWidth = 0.5*bb;
+	ctx.beginPath();
+	ctx.moveTo(x+8*bb, y+28*bb);
+	ctx.lineTo(x-8*bb, y+28*bb);
+	ctx.lineTo(x-8*bb, y+70*bb);
+	ctx.arc(x+8*bb, y+70*bb, 16*bb, 1*Math.PI, 0.6*Math.PI, true);
+	ctx.lineTo(x+30*bb, y+95*bb);
+	ctx.lineTo(x+32*bb, y+90*bb);
+	ctx.lineTo(x+20*bb, y+80*bb);
+	ctx.arc(x+10*bb, y+70*bb, 10*bb, 1*Math.PI, 0.5*Math.PI, true);
+	ctx.closePath();
+	ctx.fill();
+	
+	//neckrings
+	ctx.strokeStyle = "#333333";
+	ctx.fillStyle = "#c0c0c0";
+	ctx.lineWidth = 0.5*bb;
+	ctx.strokeRect(x-8*bb, y+28*bb, 16*bb, 3*bb);
+	ctx.fillRect(x-8*bb, y+28*bb, 16*bb, 3*bb);
+	ctx.strokeRect(x-8*bb, y+31*bb, 16*bb, 3*bb);
+	ctx.fillRect(x-8*bb, y+31*bb, 16*bb, 3*bb);
+	ctx.strokeRect(x-8*bb, y+34*bb, 16*bb, 3*bb);
+	ctx.fillRect(x-8*bb, y+34*bb, 16*bb, 3*bb);
+	
+	//boot
+	ctx.strokeStyle = "#333333";
+	ctx.fillStyle = "#c0c0c0";
+	ctx.lineWidth = 0.5*bb;
+	ctx.beginPath();
+	ctx.moveTo(x+27*bb, y+86*bb);
+	ctx.lineTo(x+23*bb, y+92*bb);
+	ctx.lineTo(x+33*bb, y+97*bb);
+	ctx.lineTo(x+40*bb, y+84*bb);
+	ctx.lineTo(x+38*bb, y+84*bb);
+	ctx.lineTo(x+34*bb, y+86*bb);
+	ctx.closePath();
+	ctx.fill();
+	
+	//Fireextinguisher
+	
+	ctx.strokeStyle = "#000000";
+	ctx.fillStyle = "#c0c0c0";
+	ctx.lineWidth = 0.5*bb;
+	ctx.strokeRect(x+18*bb, y+45*bb, 5*bb, 2*bb);
+	ctx.fillRect(x+18*bb, y+45*bb, 5*bb, 2*bb);
+
+	ctx.strokeStyle = "#000000";
+	ctx.fillStyle = "#990000";
+	ctx.lineWidth = 0.5*bb;
+	ctx.beginPath();
+	ctx.moveTo(x+13*bb, y+65*bb);
+	ctx.lineTo(x+13*bb, y+42*bb);
+	ctx.arc(x+16*bb, y+42*bb, 3*bb, 1*Math.PI, 1.5*Math.PI);
+	ctx.lineTo(x+20*bb, y+45*bb);
+	ctx.arc(x+16*bb, y+42*bb, 3*bb, 1.5*Math.PI, 0);
+	ctx.lineTo(x+19*bb, y+65*bb);
+	ctx.lineTo(x+13*bb, y+65*bb);
+	ctx.closePath();
+	ctx.fill();
+		
+	//arm
+	ctx.strokeStyle = "#333333";
+	ctx.fillStyle = "#DDDDDD";
+	ctx.lineWidth = 0.5*bb;
+	ctx.beginPath();
+	ctx.moveTo(x-6*bb, y+42*bb);
+	ctx.lineTo(x-6*bb, y+50*bb);
+	ctx.arc(x+0*bb, y+50*bb, 6*bb, 1*Math.PI, 0.6*Math.PI, true);
+	ctx.lineTo(x+15*bb, y+58*bb);
+	ctx.arc(x+15*bb, y+55*bb, 3*bb, 0.5*Math.PI, 1.5*Math.PI, true);
+	ctx.lineTo(x+15*bb, y+52*bb);
+	ctx.lineTo(x+5*bb, y+51*bb);
+	ctx.lineTo(x+5*bb, y+42*bb);
+	ctx.stroke();
+	ctx.closePath();
+	ctx.fill();
+}
+
+function DrawSpray(){
+	ctx.strokeStyle = "#FFFFFF";
+	ctx.lineWidth = 5;
+	ctx.globalAlpha = 0.8;
+	ctx.beginPath();
+	ctx.moveTo(startofspray, ypos+25);
+	ctx.lineTo(startofspray+lengthofspray, ypos+25);
+	ctx.stroke();
+	ctx.closePath();
+	ctx.globalAlpha = 1.0;
+}
+
+function DrawArrow(x, y, h, w, c, r){
+	ctx.save();
+	ctx.translate(x, y+0.5*h);
+	ctx.rotate(r);
+	ctx.fillStyle = c;
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 1;
+	ctx.beginPath();
+	ctx.moveTo(0,-0.5*h);
+	ctx.lineTo(0+w, -0.5*h+w);
+	ctx.lineTo(0+0.5*w, -0.5*h+w);
+	ctx.lineTo(0+0.5*w, -0.5*h+h);
+	ctx.lineTo(0-0.5*w, -0.5*h+h);
+	ctx.lineTo(0-0.5*w, -0.5*h+w);
+	ctx.lineTo(0-w, -0.5*h+w);
+	ctx.lineTo(0,-0.5*h);
+	ctx.stroke();
+	ctx.closePath();
+	ctx.fill();
+	ctx.restore();
+}
+
+function SwitchMass(x){
+	massnumber = massnumber + x;
+	if (massnumber > 12){
+		massnumber = 12;
+	}
+	if (massnumber < 0){
+		massnumber = 0;
+	}
+	SetValues();
+	drawingpart();
+}
+
+function SwitchEnergy(x){
+	energynumber = energynumber + x;
+	if (energynumber > 11){
+		energynumber = 11;
+	}
+	if (energynumber < 0){
+		energynumber = 0;
+	}
+	SetValues();
+	drawingpart();
+}
+
+function SwitchForce(x){
+	forcenumber = forcenumber + x;
+	if (forcenumber > 23){
+		forcenumber = 23;
+		forcenumber = 23;
+	}
+	if (forcenumber < 0){
+		forcenumber = 0;
+	}
+	SetValues();
+	drawingpart();
+}
+
+function SwitchSpeed(x){
+	speednumber = speednumber + x;
+	if (speednumber > 12){
+		speednumber = 12;
+	}
+	if (speednumber < 0){
+		speednumber = 0;
+	}
+	SetValues();
+	drawingpart();
+}
+
+function WriteText(x,y,t,s,c,m){
+	ctx.fillStyle = c;
+	ctx.font= s + "px Arial";
+	temptext = t;
+	metrics = ctx.measureText(temptext);
+	textWidth = metrics.width;
+	xposition = x - m*textWidth;
+	ctx.fillText(temptext,xposition, y);
+}
+
+function SwitchLanguage(x){
+	languagenumber = x;
+	document.getElementById("LabDirections").innerHTML = Directions[languagenumber];
+	document.getElementById("BeginButton").innerHTML = Button1Text[languagenumber];
+	document.getElementById("ProgramTitle").innerHTML = ProgramTitleIs[languagenumber];
+	document.title = ProgramTitleIs[languagenumber];
+	document.getElementById("OverviewPicture").src = PictureLocationPlace[languagenumber];
+			
+}
